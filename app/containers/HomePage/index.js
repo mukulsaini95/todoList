@@ -27,6 +27,12 @@ let FILTERS = {
   "In-progress": "fa fa-spinner",
   "Completed": "fa fa-check"
 }
+let CLASS_FOR_FILTER = {
+  "Planned": "text-yellow",
+  "In-progress": "text-orange",
+  "Completed": "text-lightGreen",
+  "All":"text-blueviolet"
+}
 export class HomePage extends React.Component {
   state = {
     todoList: [],
@@ -78,7 +84,7 @@ export class HomePage extends React.Component {
 
   onSubmitHandler = (event) => {
     event.preventDefault()
-
+    $('#myModal').modal('toggle');
     let payload = {
       title: this.state.title,
       status: "Planned",
@@ -107,64 +113,85 @@ export class HomePage extends React.Component {
     let todoList = this.state.todoList.filter(item => item.status == this.state.selectedFilter || this.state.selectedFilter === "All");
     return (
       <div className="devContainer">
-        <div className="content-container">
-          <div className="inputBox">
-            <form onSubmit={this.onSubmitHandler}>
-              <input placeholder="task" value={this.state.title} onChange={this.onChangeHandler} />
-              <button>
-                <i className="fa fa-plus" aria-hidden="true"></i>
-              </button>
-            </form>
+        <div className="container">
+          <div className="content-container">
+            <div className="tab">
+              <ul>
+                {Object.entries(FILTERS).map(([key, value]) => (
+                  <li className={this.state.selectedFilter == key ? "active" : ""} key={key} onClick={() => this.filterChangeHandler(key)}>
+                    <i className={value +" " +CLASS_FOR_FILTER[key]} aria-hidden="true"></i>
+                    {key}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div className="tab">
-            <ul>
-              {Object.entries(FILTERS).map(([key, value]) => (
-                <li className={this.state.selectedFilter == key ? "active" : ""} key={key} onClick={() => this.filterChangeHandler(key)}>
-                  <i class={value} aria-hidden="true"></i>
-                  {key}
-                </li>
-              ))}
-            </ul>
+
+          <div className="list">
+            {this.state.isFetching ?
+              <div>Loading</div>
+              : <ul className="todo">
+                {todoList.length ? todoList.map(item => <li key={item.id}>
+                  <span className="deleteIcon">
+                    <i className={FILTERS[item.status]+" " +CLASS_FOR_FILTER[item.status]} aria-hidden="true"></i>
+                  </span>
+
+                  {item.title}
+                  <span className="actions">
+                    <span title="delete" onClick={() => this.props.deleteTask(item.id)}>
+                      <i className='fa fa-trash text-darkRed' aria-hidden='true'></i>
+
+                    </span>
+                    <span title="Planned" onClick={() => this.statusChangeHandler("Planned", item)}>
+                      <i class={(item.status == "Planned" ? "text-gray notAllowedCursor" : CLASS_FOR_FILTER["Planned"]) + " fa fa-calendar "} aria-hidden="true"></i>
+                    </span>
+                    <span title="In-progress" onClick={() => this.statusChangeHandler("In-progress", item)}>
+                      <i class={(item.status == "In-progress" ? "text-gray notAllowedCursor" :CLASS_FOR_FILTER["In-progress"]) + " fa fa-spinner "} aria-hidden="true"></i>
+                    </span>
+                    <span title="complete " onClick={() => this.statusChangeHandler("Completed", item)}>
+                      <i className={(item.status == "Completed" ? "text-gray notAllowedCursor" : CLASS_FOR_FILTER["Completed"]) + " fa fa-check "} aria-hidden="true"></i>
+                    </span>
+                  </span>
+                </li>)
+                  :
+                  <li>
+                    <p>
+                      No Data Found!
+                   </p>
+                  </li>
+                }
+
+              </ul>
+            }
+
           </div>
+
         </div>
+        <button data-target="#myModal" data-toggle="modal" className="kc_fab_main_btn" onClick={() => this.setState({ title: "" })}>+</button>
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
 
-        <div className="list">
-          {this.state.isFetching ?
-            <div>Loading</div>
-            : <ul className="todo">
-              {todoList.length ? todoList.map(item => <li key={item.id}>
-                <span className="deleteIcon">
-                  <i class={FILTERS[item.status]} aria-hidden="true"></i>
-                </span>
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Task</h4>
+              </div>
+              <div class="modal-body">
+                <div className="inputBox">
+                  <form onSubmit={this.onSubmitHandler}>
+                    <input placeholder="Task" value={this.state.title} onChange={this.onChangeHandler} />
+                    <button>
+                      <i className="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
 
-                {item.title}
-                <span className="actions">
-                  <span title="delete" onClick={() => this.props.deleteTask(item.id)}>
-                    <i className='fa fa-trash text-darkRed' aria-hidden='true'></i>
-
-                  </span>
-                  <span title="In-progress" onClick={() => this.statusChangeHandler("In-progress", item)}>
-                    <i class={(item.status == "In-progress" ? "text-gray notAllowedCursor" : "text-yellow") + " fa fa-spinner "} aria-hidden="true"></i>
-                  </span>
-                  <span title="complete " onClick={() => this.statusChangeHandler("Completed", item)}>
-                    <i className={(item.status == "Completed" ? "text-gray notAllowedCursor" : "text-lightGreen") + " fa fa-check "} aria-hidden="true"></i>
-                  </span>
-                  <span title="edit">
-                    <i class="fa fa-pencil text-darkBlue" aria-hidden="true"></i>
-                  </span>
-                </span>
-              </li>)
-                :
-                <li>
-                  <p>
-                    No Data Found!
-                </p>
-                </li>
-              }
-
-            </ul>
-          }
-
+          </div>
         </div>
       </div>
     );

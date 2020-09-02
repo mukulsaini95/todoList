@@ -153,11 +153,14 @@
   }
   
   .text-yellow {
-	color: rgb(234, 200, 10) !important;
+	color:#ffc107 !important;
   }
   
+.text-orange{
+	color:#D17300 !important
+}
   .text-darkBlue {
-	color: rgb(26, 79, 126) !important;
+	color: #448fea !important;
   }
   .text-blueviolet {
 	  color:blueviolet !important;
@@ -192,15 +195,17 @@
 	align-items: center;
 	flex-direction: column;
   }
+  .container{
+	
+  }
   .content-container {
 	  flex:20%;
-	min-width: 600px;
 	padding: 50px 0px 10px 0px;
   }
   .inputBox {
 	padding: 20px;
 	background-color: black;
-	width: 600px;
+	width: 100%;
 	border-radius: 50px;
 	position: relative;
   }
@@ -278,17 +283,30 @@
   ul{list-style:none}
   .list{
 	 flex: 80%;
-  }
-  .list ul {
-	list-style: none;
+	}
+	.list ul {
+		list-style: none;
+		overflow-y: auto;
+	   height: 580px;
+	
     display: flex;
 	flex-direction: column;
 	flex: 70%;
   }
-   ul.todo li{
+  .list ul {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+  }
+  .list ul::-webkit-scrollbar {
+    display: none;
+}
+.list ul {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+  }
 
-	width: 600px;
-	min-height: 50px;
+   ul.todo li{
+	max-height: 50px;
 	float: left;
 	font-size: 14px;
 	font-weight: 500;
@@ -381,3 +399,23 @@
 		  text-align: center;
 	  padding:10px ;
 		}
+
+		.kc_fab_main_btn{
+			background-color:black;
+			width:60px;
+			height:60px;
+			border-radius:100%;
+			background:black;
+			border:none;
+			z-index: 999;
+			outline:none;
+			color:#FFF;
+			position: absolute;
+			bottom: 0;
+			right: 10px;
+			font-size:36px;
+			box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+			transition:.3s;  
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
+		  }
+		  
