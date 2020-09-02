@@ -410,7 +410,8 @@
 			z-index: 999;
 			outline:none;
 			color:#FFF;
-			position: absolute;
+			position: fixed;
+			margin: 20px;
 			bottom: 0;
 			right: 10px;
 			font-size:36px;
