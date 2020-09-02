@@ -377,7 +377,7 @@
 	  color: white;
 	  width: 50px;
 	  display: inline-block;
-  
+	border-radius: 50px;
 	  transition: 0.2s linear;
 	  opacity: 1;
 	}
