@@ -14,7 +14,6 @@ export const initialState = fromJS({
 function homePageReducer(state = initialState, action) {
   switch (action.type) {
     case CONSTANTS.GET_TODO_LIST_SUCCESS:
-      console.log('action.response: ', action.response);
       return Object.assign({}, state, {
         todoList: action.response
       });
@@ -23,7 +22,6 @@ function homePageReducer(state = initialState, action) {
         todoListFailure: { error: action.error, timestamp: new Date() }
       })
     case CONSTANTS.ON_SUBMIT_SUCCESS:
-      console.log('action.response: ', action.response);
       return Object.assign({}, state, {
         submitSuccess: action.response
       });
@@ -32,7 +30,6 @@ function homePageReducer(state = initialState, action) {
         submitFailure: { error: action.error, timestamp: new Date() }
       })
     case CONSTANTS.DELETE_TASK_SUCCESS:
-      console.log('action.response: ', action.response);
       return Object.assign({}, state, {
         deleteSuccess: action.response
       });
