@@ -111,6 +111,7 @@ export class HomePage extends React.Component {
 
   render() {
     let todoList = this.state.todoList.filter(item => item.status == this.state.selectedFilter || this.state.selectedFilter === "All");
+    let heightScreen = window.innerHeight -50 ;
     return (
       <div className="devContainer">
         <div className="container">
@@ -130,7 +131,7 @@ export class HomePage extends React.Component {
           <div className="list">
             {this.state.isFetching ?
               <div>Loading</div>
-              : <ul className="todo">
+              : <ul className="todo" style={{height:heightScreen}}>
                 {todoList.length ? todoList.map(item => <li key={item.id}>
                   <span className="deleteIcon">
                     <i className={FILTERS[item.status]+" " +CLASS_FOR_FILTER[item.status]} aria-hidden="true"></i>
