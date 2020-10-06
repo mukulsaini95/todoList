@@ -1,4 +1,16 @@
 {
   "toDoList": [
+    {
+      "title": "test",
+      "status": "Completed",
+      "timestamp": "2020-10-06T11:42:14.032Z",
+      "id": "82efda91-764d-4281-9cdb-de99aadc664e"
+    },
+    {
+      "title": "test12321",
+      "status": "Planned",
+      "timestamp": "2020-10-06T11:49:36.877Z",
+      "id": "54dc62e1-ebcf-4c80-aa02-105f166600f6"
+    }
   ]
 }

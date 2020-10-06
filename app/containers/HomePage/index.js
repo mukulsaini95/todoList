@@ -31,7 +31,7 @@ let CLASS_FOR_FILTER = {
   "Planned": "text-yellow",
   "In-progress": "text-orange",
   "Completed": "text-lightGreen",
-  "All":"text-blueviolet"
+  "All": "text-blueviolet"
 }
 export class HomePage extends React.Component {
   state = {
@@ -90,6 +90,7 @@ export class HomePage extends React.Component {
       status: "Planned",
       timestamp: new Date(),
     }
+    this.state.task && (payload.id = this.state.task.id)
     this.setState({
       title: ""
     }, () => this.props.onSubmitHandler(payload))
@@ -109,9 +110,17 @@ export class HomePage extends React.Component {
     }
   }
 
+  editMode = (task) => {
+    $('#myModal').modal('toggle');
+    this.setState({
+      title: task.title,
+      task
+    })
+  }
+
   render() {
     let todoList = this.state.todoList.filter(item => item.status == this.state.selectedFilter || this.state.selectedFilter === "All");
-    let heightScreen = window.innerHeight -50 ;
+    let heightScreen = window.innerHeight - 50;
     return (
       <div className="devContainer">
         <div className="container">
@@ -120,7 +129,7 @@ export class HomePage extends React.Component {
               <ul>
                 {Object.entries(FILTERS).map(([key, value]) => (
                   <li className={this.state.selectedFilter == key ? "active" : ""} key={key} onClick={() => this.filterChangeHandler(key)}>
-                    <i className={value +" " +CLASS_FOR_FILTER[key]} aria-hidden="true"></i>
+                    <i className={value + " " + CLASS_FOR_FILTER[key]} aria-hidden="true"></i>
                     {key}
                   </li>
                 ))}
@@ -131,23 +140,27 @@ export class HomePage extends React.Component {
           <div className="list">
             {this.state.isFetching ?
               <div>Loading</div>
-              : <ul className="todo" style={{height:heightScreen}}>
+              : <ul className="todo" style={{ height: heightScreen }}>
                 {todoList.length ? todoList.map(item => <li key={item.id}>
                   <span className="deleteIcon">
-                    <i className={FILTERS[item.status]+" " +CLASS_FOR_FILTER[item.status]} aria-hidden="true"></i>
+                    <i className={FILTERS[item.status] + " " + CLASS_FOR_FILTER[item.status]} aria-hidden="true"></i>
                   </span>
 
                   {item.title}
                   <span className="actions">
+                    <span title="edit" onClick={() => this.editMode(item)}>
+                      <i className='fa fa-pencil text-blue' aria-hidden='true'></i>
+
+                    </span>
                     <span title="delete" onClick={() => this.props.deleteTask(item.id)}>
                       <i className='fa fa-trash text-darkRed' aria-hidden='true'></i>
 
                     </span>
                     <span title="Planned" onClick={() => this.statusChangeHandler("Planned", item)}>
-                      <i class={(item.status == "Planned" ? "text-gray notAllowedCursor" : CLASS_FOR_FILTER["Planned"]) + " fa fa-calendar "} aria-hidden="true"></i>
+                      <i className={(item.status == "Planned" ? "text-gray notAllowedCursor" : CLASS_FOR_FILTER["Planned"]) + " fa fa-calendar "} aria-hidden="true"></i>
                     </span>
                     <span title="In-progress" onClick={() => this.statusChangeHandler("In-progress", item)}>
-                      <i class={(item.status == "In-progress" ? "text-gray notAllowedCursor" :CLASS_FOR_FILTER["In-progress"]) + " fa fa-spinner "} aria-hidden="true"></i>
+                      <i className={(item.status == "In-progress" ? "text-gray notAllowedCursor" : CLASS_FOR_FILTER["In-progress"]) + " fa fa-spinner "} aria-hidden="true"></i>
                     </span>
                     <span title="complete " onClick={() => this.statusChangeHandler("Completed", item)}>
                       <i className={(item.status == "Completed" ? "text-gray notAllowedCursor" : CLASS_FOR_FILTER["Completed"]) + " fa fa-check "} aria-hidden="true"></i>
@@ -168,16 +181,16 @@ export class HomePage extends React.Component {
           </div>
 
         </div>
-        <button data-target="#myModal" data-toggle="modal" className="kc_fab_main_btn" onClick={() => this.setState({ title: "" })}>+</button>
-        <div id="myModal" class="modal fade" role="dialog">
-          <div class="modal-dialog">
+        <button data-target="#myModal" data-toggle="modal" className="kc_fab_main_btn" onClick={() => this.setState({ title: "", task: null })}>+</button>
+        <div id="myModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
 
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add Task</h4>
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <h4 className="modal-title">{this.state.task ? "Update" : "Add"} Task</h4>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 <div className="inputBox">
                   <form onSubmit={this.onSubmitHandler}>
                     <input placeholder="Task" value={this.state.title} onChange={this.onChangeHandler} />
@@ -187,8 +200,8 @@ export class HomePage extends React.Component {
                   </form>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div>
 
